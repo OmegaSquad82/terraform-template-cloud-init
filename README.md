@@ -1,19 +1,27 @@
 # instance generator
 
-This module generates configuration for cloud-init and netplan
+This module generates configuration for cloud-init and netplan.
+I aims as complete as necessary to create meaningful instances
+for your bare metal or virtual machines with Ubuntu or other
+operaiong systems that work with cloud-init. Right now it's
+optimized to generate working user-data and network-config
+files for Ubuntu 20.10 Groovy Gorilla on Raspberry Pi 4B.
 
 ## References
 
 ### Modules
 
-- [network-data](./modules/network-data/README.md )
+- [network-config](./modules/network-config/README.md )
 - [user-data](./modules/user-data/README.md )
+- [static-copy](./modules/static-copy/README.md )
 
 ### Technologies
 
 - [cloud-init](https://cloudinit.readthedocs.io/ )
 - [netplan](https://netplan.io/ )
+- [terraform](https://terraform.io/ )
 
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
@@ -56,3 +64,5 @@ No provider.
 | network-config | n/a |
 | static-copy | n/a |
 | user-data | n/a |
+
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

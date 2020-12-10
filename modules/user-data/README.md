@@ -1,3 +1,4 @@
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 # user-data generator
 
 This module generates configuration for cloud-init
@@ -39,3 +40,4 @@ No requirements.
 | Name | Description |
 |------|-------------|
 | user\_data | n/a |
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

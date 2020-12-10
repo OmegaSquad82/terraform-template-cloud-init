@@ -31,4 +31,4 @@ repos:
       - id: checkov
       - id: terraform_fmt
       - id: terraform_validate
-      - id: terraform_docs_replace
+      - id: terraform_docs

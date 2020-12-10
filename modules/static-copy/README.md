@@ -1,3 +1,4 @@
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 # static-copy
 
 This module copies static files according to the specified system type.
@@ -36,3 +37,4 @@ No requirements.
 | Name | Description |
 |------|-------------|
 | read | n/a |
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

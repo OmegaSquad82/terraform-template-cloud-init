@@ -1,3 +1,4 @@
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 # network-config generator
 
 This module generates configuration for netplan
@@ -31,3 +32,4 @@ No requirements.
 | Name | Description |
 |------|-------------|
 | network\_config | n/a |
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

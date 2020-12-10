@@ -1,20 +1,3 @@
-/**
- * # instance generator
- *
- * This module generates configuration for cloud-init and netplan
- *
- * ## References
- *
- * ### Modules
- *
- * - [network-data](./modules/network-data/README.md )
- * - [user-data](./modules/user-data/README.md )
- *
- * ### Technologies
- *
- * - [cloud-init](https://cloudinit.readthedocs.io/ )
- * - [netplan](https://netplan.io/ )
- */
 locals {
   path = "${path.module}/${var.output}"
 }
