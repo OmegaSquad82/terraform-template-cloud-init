@@ -1,11 +1,12 @@
-# instance generator
+# instance configuration generator
 
 This module generates configuration for cloud-init and netplan.
 I aims as complete as necessary to create meaningful instances
 for your bare metal or virtual machines with Ubuntu or other
-operaiong systems that work with cloud-init. Right now it's
+operating systems that work with cloud-init. Right now it's
 optimized to generate working user-data and network-config
 files for Ubuntu 20.10 Groovy Gorilla on Raspberry Pi 4B.
+I believe older releases should work out of the box.
 
 ## References
 
