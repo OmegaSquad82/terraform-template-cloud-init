@@ -24,7 +24,7 @@ variable "instances" {
       }
     },
   }
-  type = map
+  type = map(any)
 }
 
 
@@ -50,7 +50,7 @@ variable "ethernets" {
       }
     },
   }
-  type = map
+  type = map(any)
 }
 
 variable "wifis" {
@@ -61,7 +61,7 @@ variable "wifis" {
   default = {
     demo = {}
   }
-  type = map
+  type = map(any)
 }
 
 variable "matcher" {
@@ -79,7 +79,7 @@ variable "matcher" {
       driver = "bcmgenet smsc95xx lan78xx"
     }
   }
-  type = map
+  type = map(any)
 }
 
 #
@@ -184,7 +184,7 @@ variable "config" {
 #
 variable "users" {
   default = ["default"]
-  type    = list
+  type    = list(any)
 }
 
 variable "byobu_by_default" {
@@ -194,11 +194,21 @@ variable "byobu_by_default" {
 }
 
 variable "chpasswd" {
-  description = "Sets the password for users."
+  description = <<-EOS
+  Sets the password for users. Be careful on what you configure here!
+
+  If you set a definitive user:password (like ubuntu:ubuntu) pair it is recommended
+  to expire the password on the first login, then change it right away to your secret.
+
+  On the other hand if you know in advance that you're going to use an SSH key pair
+  you might use a RANDOM value here. Please note that this effectively locks you out
+  of console access so you should have some fallback plan like to boot into a shell.
+
+  EOS
   default = {
     expire = true
     users = [
-      "ubuntu:RANDOM",
+      "ubuntu:ubuntu",
     ]
   }
   type = object({
@@ -208,7 +218,10 @@ variable "chpasswd" {
 }
 
 variable "ssh" {
-  description = "Setting for cloud-init's SSH module."
+  description = <<-EOS
+  Setting for cloud-init's SSH module. You can e.g. import from launchpad or github.
+  If you use an SSH key pair you probably want to disable password based ssh login.
+  EOS
   default = {
     ssh_pwauth    = true
     ssh_import_id = []
@@ -226,13 +239,13 @@ variable "ssh" {
 variable "apt" {
   description = "Module 'apt' for Debian-style package manager's configuration. Proxy is optional."
   default     = {}
-  type        = map
+  type        = map(any)
 }
 
 variable "snap" {
   description = "Please state assertions and commands that shall be forwarded to snapd."
   default     = {}
-  type        = map
+  type        = map(any)
 }
 
 variable "package" {
