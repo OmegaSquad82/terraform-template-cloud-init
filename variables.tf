@@ -6,14 +6,18 @@ variable "instances" {
   group names specific to "machine", "system" and "roles" will be merged
   and the resulting list will be written to the cloud-config "packages" list.
   If any of the network's ipv?s lists is empty, the corresponding dhcp? will
-  be set to true in the generated 'network-data' file.
+  be set to true in the generated 'network-data' file. The config map will
+  be merged on top into the cloud-config file in such a way that you're able
+  to specify any keys that cloud-init accepts. Any key in this map will in
+  effect overwrite keys with the same name written by this template.
   EOS
   default = {
     "demo" = {
-      netzone = "demo"
+      config  = {}
       machine = ["amd64pc", "netbook"]
       system  = ["ubuntu", "focal"]
       roles   = ["generic", "client", "guardedwire"]
+      netzone = "demo"
       networks = {
         ethernets = {
           eth0 = {
@@ -108,12 +112,15 @@ variable "config" {
     bootcmd = {
       roles = {
         generic = [
-          "neofetch",
+          "neofetch --stdout",
         ],
       },
     },
     runcmd = {
       roles = {
+        generic = [
+          "python -m pip install -U pip setuptools wheel",
+        ],
         guardedwire = [
           "mkdir /root/wg",
           "wg genkey > /root/wg/privatekey",
@@ -121,9 +128,11 @@ variable "config" {
           "ufw allow from 192.168.1.0/24 to any port 51820 proto udp comment 'wireguard'",
         ],
         server = [
-          "ufw allow ssh comment 'OpenSSH server'",
-          "ufw limit ssh comment 'Limit SSH connections'",
           "ufw enable",
+          "ufw allow out domain",
+          "ufw allow in domain",
+          "ufw allow in ssh",
+          "ufw limit ssh comment 'Limit SSH connections'",
         ],
       },
     },
@@ -147,12 +156,15 @@ variable "config" {
         ],
         bionic = [
           "python",
+          "python3-pip",
         ],
         focal = [
           "python-is-python3",
+          "python3-pip",
         ],
         groovy = [
           "python-is-python3",
+          "python3-pip",
         ],
       },
       roles = {
@@ -239,7 +251,6 @@ variable "ssh" {
 variable "apt" {
   description = "Module 'apt' for Debian-style package manager's configuration. Proxy is optional."
   default     = {}
-  type        = map(any)
 }
 
 variable "snap" {

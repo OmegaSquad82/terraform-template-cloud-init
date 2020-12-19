@@ -69,6 +69,7 @@ module "user-data" {
     },
     var.package,
     var.ssh,
+    each.value.config, # merge custom keys, overwrite above if applicable
   )
 }
 
