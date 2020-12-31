@@ -45,7 +45,6 @@ variable "ethernets" {
   default = {
     "demo" = {
       gateway4 = "192.168.1.1"
-      gateway6 = ""
       nameservers = {
         addresses = [
           "192.168.1.1",
