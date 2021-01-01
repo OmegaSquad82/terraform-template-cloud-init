@@ -274,6 +274,22 @@ variable "package" {
 
 
 #
+# Trust store handling
+#
+variable "ca_certs" {
+  description = "Inserted from ca-certs examples https://cloudinit.readthedocs.io/en/latest/topics/examples.html?highlight=cert#configure-an-instances-trusted-ca-certificates"
+  default = {
+    remove-defaults = false
+    trusted         = []
+  }
+  type = object({
+    remove-defaults = bool
+    trusted         = list(string)
+  })
+}
+
+
+#
 # Localization
 #
 variable "locale" {

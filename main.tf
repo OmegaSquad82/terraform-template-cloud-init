@@ -65,6 +65,7 @@ module "user-data" {
       ntp              = var.ntp
       apt              = var.apt
       snap             = var.snap
+      ca-certs         = var.ca_certs
       power_state      = var.power_state
     },
     var.package,
