@@ -1,26 +1,26 @@
 variable "bonds" {
   default = {}
-  type    = map
+  type    = map(any)
 }
 
 variable "bridges" {
   default = {}
-  type    = map
+  type    = map(any)
 }
 
 variable "ethernets" {
   default = {}
-  type    = map
+  type    = map(any)
 }
 
 variable "vlans" {
   default = {}
-  type    = map
+  type    = map(any)
 }
 
 variable "wifis" {
   default = {}
-  type    = map
+  type    = map(any)
 }
 
 variable "path" {

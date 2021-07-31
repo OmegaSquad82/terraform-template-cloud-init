@@ -40,4 +40,5 @@ No requirements.
 | Name | Description |
 |------|-------------|
 | user\_data | n/a |
+
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
