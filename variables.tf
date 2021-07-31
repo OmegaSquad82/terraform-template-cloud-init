@@ -89,7 +89,7 @@ variable "matcher" {
 # Software installation and + configuration
 #
 variable "structs" {
-  description = "Define the cloud-init-specific types of data-structures under 'config' to search during uer-data generation."
+  description = "Define the cloud-init-specific types of data-structures under 'config' to search during user-data generation."
   default     = ["packages", "bootcmd", "runcmd"]
   type        = list(string)
 }
@@ -217,7 +217,7 @@ variable "chpasswd" {
 
   EOS
   default = {
-    expire = true
+    expire = false
     users = [
       "ubuntu:ubuntu",
     ]
