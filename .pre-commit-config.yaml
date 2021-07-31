@@ -2,7 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0
+    rev: v4.0.1
     hooks:
       - id: trailing-whitespace
       - id: mixed-line-ending
@@ -15,18 +15,18 @@ repos:
       - id: check-yaml
       - id: check-xml
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.1.9
+    rev: v1.1.10
     hooks:
       - id: remove-crlf
       - id: remove-tabs
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v2.2.1
+    rev: v2.3.2
     hooks:
       - id: prettier
 
   # terraform related stuff
   - repo: git://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.45.0
+    rev: v1.50.0
     hooks:
       - id: checkov
       - id: terraform_fmt
