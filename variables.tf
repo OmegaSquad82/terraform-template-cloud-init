@@ -217,14 +217,14 @@ variable "chpasswd" {
 
   EOS
   default = {
-    expire = false
-    users = [
+    expire = true
+    list = [
       "ubuntu:ubuntu",
     ]
   }
   type = object({
     expire = bool
-    users  = list(string)
+    list   = list(string)
   })
 }
 
