@@ -21,21 +21,31 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| local | n/a |
+| <a name="provider_local"></a> [local](#provider\_local) | 2.1.0 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [local_file.write](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
+| [local_file.read](https://registry.terraform.io/providers/hashicorp/local/latest/docs/data-sources/file) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| from | n/a | `string` | n/a | yes |
-| to | n/a | `string` | n/a | yes |
-| type | n/a | `list(string)` | n/a | yes |
-| write | n/a | `bool` | `false` | no |
+| <a name="input_from"></a> [from](#input\_from) | n/a | `string` | n/a | yes |
+| <a name="input_to"></a> [to](#input\_to) | n/a | `string` | n/a | yes |
+| <a name="input_type"></a> [type](#input\_type) | n/a | `list(string)` | n/a | yes |
+| <a name="input_write"></a> [write](#input\_write) | n/a | `bool` | `false` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| read | n/a |
-
+| <a name="output_read"></a> [read](#output\_read) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
