@@ -13,9 +13,9 @@ module "network-config" {
     for ethernet, my in try(each.value.networks.ethernets, {}) : ethernet =>
     merge(var.ethernets[each.value.netzone],
       {
-        addresses = concat(my.ipv4s, my.ipv6s)
-        dhcp4     = length(my.ipv4s) == 0
-        dhcp6     = length(my.ipv6s) == 0
+        addresses = concat(try(my.ipv4s, []), try(my.ipv6s, []))
+        dhcp4     = length(try(my.ipv4s, [])) == 0
+        dhcp6     = length(try(my.ipv6s, [])) == 0
         match     = merge([for type in each.value.machine : try(var.matcher[type], {})]...)
         set-name  = ethernet
       },
@@ -26,9 +26,9 @@ module "network-config" {
     for wifi, my in try(each.value.networks.wifis, {}) : wifi =>
     merge(var.ethernets[each.value.netzone],
       {
-        addresses = concat(my.ipv4s, my.ipv6s)
-        dhcp4     = length(my.ipv4s) == 0
-        dhcp6     = length(my.ipv6s) == 0
+        addresses = concat(try(my.ipv4s, []), try(my.ipv6s, []))
+        dhcp4     = length(try(my.ipv4s, [])) == 0
+        dhcp6     = length(try(my.ipv6s, [])) == 0
         match     = merge([for type in each.value.machine : try(var.matcher[type], {})]...)
         set-name  = wifi
       },
@@ -65,10 +65,12 @@ module "user-data" {
       ntp              = var.ntp
       apt              = var.apt
       snap             = var.snap
+      ca-certs         = var.ca_certs
       power_state      = var.power_state
     },
     var.package,
     var.ssh,
+    each.value.config, # merge custom keys, overwrite above if applicable
   )
 }
 

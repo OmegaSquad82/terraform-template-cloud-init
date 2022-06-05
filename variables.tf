@@ -6,14 +6,18 @@ variable "instances" {
   group names specific to "machine", "system" and "roles" will be merged
   and the resulting list will be written to the cloud-config "packages" list.
   If any of the network's ipv?s lists is empty, the corresponding dhcp? will
-  be set to true in the generated 'network-data' file.
+  be set to true in the generated 'network-data' file. The config map will
+  be merged on top into the cloud-config file in such a way that you're able
+  to specify any keys that cloud-init accepts. Any key in this map will in
+  effect overwrite keys with the same name written by this template.
   EOS
   default = {
     "demo" = {
-      netzone = "demo"
+      config  = {}
       machine = ["amd64pc", "netbook"]
       system  = ["ubuntu", "focal"]
       roles   = ["generic", "client", "guardedwire"]
+      netzone = "demo"
       networks = {
         ethernets = {
           eth0 = {
@@ -24,7 +28,7 @@ variable "instances" {
       }
     },
   }
-  type = map
+  type = map(any)
 }
 
 
@@ -41,7 +45,6 @@ variable "ethernets" {
   default = {
     "demo" = {
       gateway4 = "192.168.1.1"
-      gateway6 = ""
       nameservers = {
         addresses = [
           "192.168.1.1",
@@ -50,7 +53,7 @@ variable "ethernets" {
       }
     },
   }
-  type = map
+  type = map(any)
 }
 
 variable "wifis" {
@@ -61,7 +64,7 @@ variable "wifis" {
   default = {
     demo = {}
   }
-  type = map
+  type = map(any)
 }
 
 variable "matcher" {
@@ -79,14 +82,14 @@ variable "matcher" {
       driver = "bcmgenet smsc95xx lan78xx"
     }
   }
-  type = map
+  type = map(any)
 }
 
 #
 # Software installation and + configuration
 #
 variable "structs" {
-  description = "Define the cloud-init-specific types of data-structures under 'config' to search during uer-data generation."
+  description = "Define the cloud-init-specific types of data-structures under 'config' to search during user-data generation."
   default     = ["packages", "bootcmd", "runcmd"]
   type        = list(string)
 }
@@ -108,12 +111,15 @@ variable "config" {
     bootcmd = {
       roles = {
         generic = [
-          "neofetch",
+          "neofetch --stdout",
         ],
       },
     },
     runcmd = {
       roles = {
+        generic = [
+          "python -m pip install -U pip setuptools wheel",
+        ],
         guardedwire = [
           "mkdir /root/wg",
           "wg genkey > /root/wg/privatekey",
@@ -121,9 +127,11 @@ variable "config" {
           "ufw allow from 192.168.1.0/24 to any port 51820 proto udp comment 'wireguard'",
         ],
         server = [
-          "ufw allow ssh comment 'OpenSSH server'",
-          "ufw limit ssh comment 'Limit SSH connections'",
           "ufw enable",
+          "ufw allow out domain",
+          "ufw allow in domain",
+          "ufw allow in ssh",
+          "ufw limit ssh comment 'Limit SSH connections'",
         ],
       },
     },
@@ -147,12 +155,15 @@ variable "config" {
         ],
         bionic = [
           "python",
+          "python3-pip",
         ],
         focal = [
           "python-is-python3",
+          "python3-pip",
         ],
         groovy = [
           "python-is-python3",
+          "python3-pip",
         ],
       },
       roles = {
@@ -184,7 +195,7 @@ variable "config" {
 #
 variable "users" {
   default = ["default"]
-  type    = list
+  type    = list(any)
 }
 
 variable "byobu_by_default" {
@@ -194,21 +205,34 @@ variable "byobu_by_default" {
 }
 
 variable "chpasswd" {
-  description = "Sets the password for users."
+  description = <<-EOS
+  Sets the password for users. Be careful on what you configure here!
+
+  If you set a definitive user:password (like ubuntu:ubuntu) pair it is recommended
+  to expire the password on the first login, then change it right away to your secret.
+
+  On the other hand if you know in advance that you're going to use an SSH key pair
+  you might use a RANDOM value here. Please note that this effectively locks you out
+  of console access so you should have some fallback plan like to boot into a shell.
+
+  EOS
   default = {
     expire = true
-    users = [
-      "ubuntu:RANDOM",
+    list = [
+      "ubuntu:ubuntu",
     ]
   }
   type = object({
     expire = bool
-    users  = list(string)
+    list   = list(string)
   })
 }
 
 variable "ssh" {
-  description = "Setting for cloud-init's SSH module."
+  description = <<-EOS
+  Setting for cloud-init's SSH module. You can e.g. import from launchpad or github.
+  If you use an SSH key pair you probably want to disable password based ssh login.
+  EOS
   default = {
     ssh_pwauth    = true
     ssh_import_id = []
@@ -226,13 +250,12 @@ variable "ssh" {
 variable "apt" {
   description = "Module 'apt' for Debian-style package manager's configuration. Proxy is optional."
   default     = {}
-  type        = map
 }
 
 variable "snap" {
   description = "Please state assertions and commands that shall be forwarded to snapd."
   default     = {}
-  type        = map
+  type        = map(any)
 }
 
 variable "package" {
@@ -246,6 +269,22 @@ variable "package" {
     package_update             = bool
     package_upgrade            = bool
     package_reboot_if_required = bool
+  })
+}
+
+
+#
+# Trust store handling
+#
+variable "ca_certs" {
+  description = "Inserted from ca-certs examples https://cloudinit.readthedocs.io/en/latest/topics/examples.html?highlight=cert#configure-an-instances-trusted-ca-certificates"
+  default = {
+    remove-defaults = false
+    trusted         = []
+  }
+  type = object({
+    remove-defaults = bool
+    trusted         = list(string)
   })
 }
 
